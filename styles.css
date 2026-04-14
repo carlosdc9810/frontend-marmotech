@@ -557,3 +557,127 @@ nav {
 .hidden {
     display: none;
 }
+/* ================= RESPONSIVE MEJORADO ================= */
+
+/* TABLETS */
+@media (max-width: 1024px) {
+
+    .dashboard {
+        gap: 15px;
+    }
+
+    .sidebar {
+        width: 220px;
+    }
+
+    .login-box {
+        width: 320px;
+        padding: 30px;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+}
+
+/* TABLETS PEQUEÑAS / GRANDES MÓVILES */
+@media (max-width: 768px) {
+
+    /* DASHBOARD EN COLUMNA */
+    .dashboard {
+        flex-direction: column;
+    }
+
+    /* SIDEBAR ARRIBA */
+    .sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+        max-height: none;
+        border-radius: 10px;
+    }
+
+    /* MAIN OCUPA TODO */
+    .main-content {
+        width: 100%;
+        padding: 18px;
+    }
+
+    /* FORMULARIOS */
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* LOGIN MÁS PEQUEÑO */
+    .login-box {
+        width: 90%;
+        padding: 25px;
+    }
+
+    /* NAV MÁS FLEXIBLE */
+    nav {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .nav-right {
+        margin-left: 0;
+        justify-content: center;
+    }
+}
+
+/* MÓVILES PEQUEÑOS */
+@media (max-width: 480px) {
+
+    /* LOGIN FULL RESPONSIVE */
+    .login-box {
+        width: 95%;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    /* BOTONES MÁS GRANDES */
+    .btn {
+        width: 100%;
+        padding: 12px;
+    }
+
+    /* TABLAS RESPONSIVE */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* SIDEBAR MÁS SIMPLE */
+    .sidebar a {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* TEXTO MÁS PEQUEÑO */
+    body {
+        font-size: 14px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    /* INPUTS MÁS GRANDES PARA TOQUE */
+    input, select, textarea {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        font-size: 13px;
+    }
+
+    table th, table td {
+        padding: 8px;
+    }
+}
