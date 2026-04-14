@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marmotech - Sistema de Registo de Eventualidades</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Página de Login -->
+    <div id="login-page" class="login-container">
+        <div class="login-box">
+            <h2>Marmotech S.A</h2>
+            <h3>Iniciar Sesión</h3>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group password-container">
+                    <label for="password">Contraseña</label>
+
+                    <div class="input-password">
+                        <input type="password" id="password" required>
+
+                        <svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"
+                            style="cursor:pointer; position:absolute; right:10px; top:50%; transform:translateY(-50%);">
+
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block">Ingresar</button>
+            </form>
+            <p style="text-align:center; margin-top:15px;">
+                <a href="#" onclick="mostrarRecuperacion()" style="color:#3498db; text-decoration:none;">
+                    ¿Olvidaste tu contraseña?
+                </a>
+        </div>
+    </div>
+
+    <!-- Dashboard (oculto inicialmente) -->
+    <div id="dashboard" class="hidden">
+        <header>
+            <div class="container">
+                <nav>
+
+                    <!-- IZQUIERDA -->
+                    <div class="nav-left">
+                        <span id="toggle-menu">☰</span>
+
+                        <div class="logo">
+                            <img src="marmotech_logo.jpg">
+                            <span>Marmotech S.A</span>
+                        </div>
+                    </div>
+
+                    <!-- DERECHA -->
+                    <div class="nav-right">
+                        <span id="bienvenida"></span>
+
+                        <span id="campana" style="position:relative;">
+                            🔔
+                            <span id="contador-alertas" style="
+                                   display:none;
+                                    position:absolute;
+                                    top:-5px;
+                                    right:-10px;
+                                    background:red;
+                                    color:white;
+                                    font-size:10px;
+                                    padding:2px 5px;
+                                    border-radius:50%;
+                             ">0</span>
+
+                            <div id="panel-alertas" style="
+                            display:none;
+                            position:absolute;
+                            top:70px;
+                            right:20px;
+                            width:250px;
+                            background:white;
+                            border-radius:10px;
+                            box-shadow:0 5px 15px rgba(0,0,0,0.2);
+                            z-index:1000;
+                            max-height:300px;
+                            overflow-y:auto;
+                        ">
+                            </div>
+                        </span>
+
+                        <a href="#" id="logout">Cerrar Sesión</a>
+                    </div>
+
+                </nav>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <h3>Menú</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="menu-link active" data-tab="resumen" data-title="Resumen">
+                                <span class="icon">🏠</span>
+                                <span class="text">Resumen</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="menu-link" data-tab="registrar-lote" data-title="Registrar Lote">
+                                <span class="icon">📦</span>
+                                <span class="text">Registrar Lote</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="menu-link" data-tab="registrar-evento" data-title="Registrar Evento">
+                                <span class="icon">⚠️</span>
+                                <span class="text">Registrar Evento</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="menu-link" data-tab="reportes" data-title="Reportes">
+                                <span class="icon">📊</span>
+                                <span class="text">Generar Reportes</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="menu-link" data-tab="historial" data-title="Historial">
+                                <span class="icon">📜</span>
+                                <span class="text">Historial de Cambios</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="menu-link" data-tab="configuracion" data-title="Configuración">
+                                <span class="icon">⚙️</span>
+                                <span class="text">Configuración</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="menu-link" data-tab="agregar" data-title="Usuarios">
+                                <span class="icon">👥</span>
+                                <span class="text">Control Usuarios</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="main-content">
+                    <!-- Contenido del Resumen -->
+                    <div id="resumen" class="tab-content active">
+                        <h2>Registro de Productos por Número de Lote</h2>
+
+                        <div class="card">
+                            <h3>Resumen</h3>
+                            <p>Bienvenido al sistema de Registo de Marmotech. Desde aquí puedes monitorear lotes,
+                                registrar eventualidades y generar reportes.</p>
+                        </div>
+
+                        <div class="card">
+                            <h3>Búsqueda Rápida</h3>
+                            <div class="search-bar">
+                                <input type="text" id="quick-search" placeholder="Ingrese número de lote...">
+                                <button id="quick-search-btn">Buscar</button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Lotes Recientes</h3>
+                            <table id="lotes-recientes-table">
+                                <thead>
+                                    <tr>
+                                        <th>N° Lote</th>
+                                        <th>Producto</th>
+                                        <th>Fecha Fabricación</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                        <th>Editar</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Los lotes se cargarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card">
+                            <h3>Eventualidades Recientes</h3>
+                            <div id="alerta-eventos" class="alert alert-warning" style="display: none;">
+                                <!-- Alerta dinámica -->
+                            </div>
+                            <table id="eventos-recientes-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID Evento</th>
+                                        <th>Lote</th>
+                                        <th>Tipo</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Los eventos se cargarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Registrar Lote -->
+                    <div id="registrar-lote" class="tab-content">
+                        <h2>Registrar Nuevo Lote</h2>
+                        <div class="card">
+                            <div class="form-container">
+                                <form id="form-registrar-lote">
+                                    <div class="form-row">
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="numero-lote">Número de Lote</label>
+                                                <input type="text" id="numero-lote" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="fecha-fabricacion">Fecha de Fabricación</label>
+                                                <input type="date" id="fecha-fabricacion" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="producto">Producto</label>
+                                        <input type="text" id="producto" required>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="cantidad">Cantidad</label>
+                                                <input type="number" id="cantidad" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="proveedor">Proveedor</label>
+                                                <input type="text" id="proveedor" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="fecha-vencimiento">Fecha de Vencimiento</label>
+                                        <input type="date" id="fecha-vencimiento" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="observaciones">Observaciones</label>
+                                        <textarea id="observaciones"></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn">Registrar Lote</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalle del Lote -->
+                    <div id="detalle-lote" class="tab-content">
+                        <h2>Detalle del Lote <span id="lote-numero"></span></h2>
+                        <button class="btn" onclick="showTab('resumen')">Volver a inicio</button>
+
+                        <div class="card lote-details">
+                            <h3>Información del Lote</h3>
+                            <div class="lote-info" id="lote-info-container">
+                                <!-- Información del lote se cargará aquí -->
+                            </div>
+                        </div>
+
+                        <div class="card" id="acciones-lote">
+                            <h3>Acciones</h3>
+                            <!-- COMBOBOX (VISIBLE) -->
+                            <select id="acciones-combo" class="combo-acciones">
+                                <option value="">Seleccione una acción...</option>
+                                <option value="retirar">Retirar Lote</option>
+                                <option value="eliminar">Eliminar Lote</option>
+                                <option value="evento">Registrar Eventualidad</option>
+                            </select>
+
+                            <!-- BOTONES-->
+                            <div style="margin-top:10px; display:flex; gap:10px;">
+                                <button class="btn btn-success" onclick="ejecutarAccionLote()">
+                                    Guardar
+                                </button>
+
+                                <button class="btn btn-danger" onclick="cancelarAccionLote()">
+                                    Cancelar
+                                </button>
+                            </div>
+
+                            <!-- BOTONES OCULTOS (PARA LA LÓGICA) -->
+                            <div style="display:none;">
+                                <button id="retirar-lote-btn"></button>
+                                <button id="eliminar-lote-btn"></button>
+                                <button id="registrar-evento-lote-btn"></button>
+                            </div>
+                        </div>
+
+
+                        <div class="card eventos-lote">
+                            <h3>Eventualidades Registradas</h3>
+                            <table id="eventos-lote-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID Evento</th>
+                                        <th>Tipo</th>
+                                        <th>Fecha</th>
+                                        <th>Gravedad</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Eventos del lote se cargarán aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+                    <!-- Registrar Evento -->
+                    <div id="registrar-evento" class="tab-content">
+                        <h2>Registrar Eventualidad</h2>
+                        <div class="card">
+                            <div class="form-container">
+                                <form id="form-registrar-evento">
+                                    <div class="form-group">
+                                        <label for="lote-evento">Número de Lote</label>
+                                        <select id="lote-evento" required>
+                                            <option value="">Seleccione lote...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tipo-evento">Tipo de Evento</label>
+                                        <select id="tipo-evento" class="form-group" required>
+                                            <option value="">Seleccione...</option>
+                                            <option value="retiro">Retiro del mercado</option>
+                                            <option value="reclamo">Reclamo de cliente</option>
+                                            <option value="defecto">Defecto de fabricación</option>
+                                            <option value="otros">Otros</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="descripcion-evento">Descripción</label>
+                                        <textarea id="descripcion-evento" required></textarea>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="fecha-evento">Fecha del Evento</label>
+                                                <input type="date" id="fecha-evento" required max="">
+                                            </div>
+                                        </div>
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="gravedad">Gravedad</label>
+                                                <select id="gravedad" required>
+                                                    <option value="baja">Baja</option>
+                                                    <option value="media">Media</option>
+                                                    <option value="alta">Alta</option>
+                                                    <option value="critica">Crítica</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn">Registrar Evento</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalle del Evento -->
+                    <div id="detalle-evento" class="tab-content">
+                        <h2>Detalle del Evento <span id="evento-id"></span></h2>
+                        <button class="btn" onclick="showTab('resumen')">Volver al Inicio</button>
+
+                        <div class="card lote-details">
+                            <h3>Información del Evento</h3>
+                            <div class="lote-info" id="evento-info-container">
+                                <!-- Información del evento se cargará aquí -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Descripción</h3>
+                            <div id="evento-descripcion"
+                                style="padding: 15px; background-color: #f9f9f9; border-radius: 4px;">
+                                <!-- Descripción del evento -->
+                            </div>
+                        </div>
+
+                        <div class="card" id="acciones-evento">
+                            <h3>Acciones</h3>
+                            <!-- COMBO -->
+                            <select id="acciones-evento-combo" class="combo-acciones">
+                                <option value="">Seleccione una acción...</option>
+                                <option value="investigar">En Investigación</option>
+                                <option value="resolver">Marcar como Resuelto</option>
+                                <option value="eliminar">Eliminar Evento</option>
+                            </select>
+
+                            <!-- BOTONES-->
+                            <div style="margin-top:10px; display:flex; gap:10px;">
+                                <button class="btn btn-success" onclick="ejecutarAccionEvento()">
+                                    Guardar
+                                </button>
+
+                                <button class="btn btn-danger" onclick="cancelarAccionEvento()">
+                                    Cancelar
+                                </button>
+                            </div>
+                            <!-- BOTONES OCULTOS (NO BORRAR) -->
+                            <div style="display:none;">
+                                <button id="investigar-evento-btn"></button>
+                                <button id="resolver-evento-btn"></button>
+                                <button id="eliminar-evento-btn"></button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Reportes -->
+                    <div id="reportes" class="tab-content">
+                        <h2>Generar Reportes</h2>
+                        <div class="card">
+                            <h3>Seleccione el tipo de reporte</h3>
+                            <div class="form-container">
+                                <form id="form-generar-reporte">
+                                    <div class="form-group">
+                                        <label for="tipo-reporte">Tipo de Reporte</label>
+                                        <select id="tipo-reporte" required>
+                                            <option value="">Seleccione...</option>
+                                            <option value="lotes-activos">Lotes activos</option>
+                                            <option value="lotes-retirados">Lotes retirados</option>
+                                            <option value="eventos-periodo">Eventos por período</option>
+                                            <option value="eventos-pendientes">Eventos pendientes</option>
+                                            <option value="eventos-resueltos">Eventos resueltos</option>
+                                            <option value="eventos-investigacion">Eventos en investigación</option>
+                                            <option value="productos">Productos por proveedor</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-row" id="rango-fechas" style="display: none;">
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="fecha-inicio">Fecha Inicio</label>
+                                                <input type="date" id="fecha-inicio">
+                                            </div>
+                                        </div>
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="fecha-fin">Fecha Fin</label>
+                                                <input type="date" id="fecha-fin">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn">Generar Reporte</button>
+                                    <button type="button" class="btn btn-success" onclick="generarPDF()">Exportar a
+                                        PDF</button>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card" id="resultado-reporte" style="display: none;">
+                            <h3>Resultado del Reporte</h3>
+                            <div id="contenido-reporte">
+                                <!-- Aquí se mostraría el reporte generado -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración -->
+                    <div id="configuracion" class="tab-content">
+                        <h2>Configuración del Sistema</h2>
+
+                        <!-- 🔧 CONFIGURACIÓN -->
+                        <div class="card">
+                            <div class="form-container">
+                                <form id="form-configuracion">
+                                    <h3>Preferencias de Usuario</h3>
+
+
+
+                                    <div class="form-group">
+                                        <label>Recibir notificaciones por email</label>
+                                        <input type="checkbox" id="notificaciones" checked>
+                                    </div>
+
+                                    <h3 style="margin-top: 30px;">Configuración del Sistema</h3>
+
+                                    <div class="form-group">
+                                        <label>Días para alerta de vencimiento</label>
+                                        <input type="number" id="dias-alerta" value="30" min="1">
+                                    </div>
+
+                                    <button type="submit" class="btn">Guardar Configuración</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- CREAR USUARIO  -->
+                    <div id="agregar" class="tab-content">
+                        <h2>Gestión de Usuarios</h2>
+
+                        <!-- CREAR USUARIO -->
+                        <div class="card">
+                            <h3>Crear Nuevo Usuario</h3>
+
+                            <form id="form-crear-usuario">
+
+                                <div class="form-row">
+                                    <div class="form-col">
+                                        <div class="form-group">
+                                            <label>Nombre de Usuario *</label>
+                                            <input type="text" id="new-username" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-col">
+                                        <div class="form-group">
+                                            <label>Correo Electrónico *</label>
+                                            <input type="email" id="new-email" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Nombre Completo *</label>
+                                    <input type="text" id="new-nombre" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Rol *</label>
+                                    <select id="new-rol" required>
+                                        <option value="">Seleccionar rol</option>
+                                        <option value="admin">Administrador</option>
+                                        <option value="supervisor">Supervisor</option>
+                                        <option value="asistente">Asistente</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-col">
+                                        <div class="form-group">
+                                            <label>Contraseña *</label>
+                                            <input type="password" id="new-password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-col">
+                                        <div class="form-group">
+                                            <label>Confirmar Contraseña *</label>
+                                            <input type="password" id="confirm-password" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="new-activo" checked>
+                                        Usuario activo
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Crear Usuario</button>
+                            </form>
+                        </div>
+
+                        <!-- LISTA DE USUARIOS -->
+                        <div class="card">
+                            <h3>Lista de Usuarios</h3>
+
+                            <table id="usuarios-table">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Rol</th>
+                                        <th>Estado</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+
+                        <!-- Editar usuarios -->
+                    <div id="modal-editar" class="modal hidden">
+                        <div class="modal-content">
+                            <h3>Editar Usuario</h3>
+
+                            <input type="hidden" id="edit-id">
+
+                            <div class="form-group">
+                                <label>Usuario</label>
+                                <input type="text" id="edit-username">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="edit-email">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" id="edit-nombre">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Rol</label>
+                                <select id="edit-rol">
+                                    <option value="admin">Administrador</option>
+                                    <option value="supervisor">Supervisor</option>
+                                    <option value="asistente">Asistente</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="edit-activo"> Activo
+                                </label>
+                            </div>
+
+                            <div style="margin-top:10px;">
+                                <button onclick="guardarEdicion()" class="btn btn-success">Guardar</button>
+                                <button onclick="cerrarModal()" class="btn btn-danger">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Historial de cambios -->
+                    <div id="historial" class="tab-content">
+                        <h2>Historial de Cambios</h2>
+
+                        <!-- ========================= -->
+                        <!-- HISTORIAL DE LOTES -->
+                        <!-- ========================= -->
+                        <div class="card">
+                            <h3>Historial de Lotes</h3>
+
+                            <table id="tabla-historial-lotes">
+                                <thead>
+                                    <tr>
+                                        <th>Lote</th>
+                                        <th>Producto</th>
+                                        <th>Campo</th>
+                                        <th>Antes</th>
+                                        <th>Después</th>
+                                        <th>Usuario</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                        <!-- ========================= -->
+                        <!-- HISTORIAL DE EVENTOS -->
+                        <!-- ========================= -->
+                        <div class="card">
+                            <h3>Historial de Eventos</h3>
+
+                            <table id="tabla-historial-eventos">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Lote</th>
+                                        <th>Producto</th>
+                                        <th>Campo</th>
+                                        <th>Antes</th>
+                                        <th>Después</th>
+                                        <th>Usuario</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const togglePassword = document.getElementById("togglePassword");
+            const passwordInput = document.getElementById("password");
+
+            let visible = false;
+
+            togglePassword.addEventListener("click", () => {
+                visible = !visible;
+
+                // Cambiar tipo de input
+                passwordInput.type = visible ? "text" : "password";
+
+                // Cambiar SVG SIN eliminarlo
+                if (visible) {
+                    togglePassword.innerHTML = `
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a21.77 21.77 0 0 1 5.06-6.94"/>
+                <path d="M1 1l22 22"/>
+                <path d="M9.53 9.53a3 3 0 0 0 4.24 4.24"/>
+                <path d="M14.47 14.47L9.53 9.53"/>
+                <path d="M10.73 5.08A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.77 21.77 0 0 1-4.34 5.94"/>
+            `;
+                } else {
+                    togglePassword.innerHTML = `
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+                <circle cx="12" cy="12" r="3"/>
+            `;
+                }
+            });
+        });
+    </script>
+
+    <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+</body>
+
+</html>
